@@ -1,30 +1,44 @@
-import React, { useState } from "react";
+import React, {useReducer, useState} from "react";
+import {
+    FETCH_INIT,
+    FETCH_SUCCESS,
+    FETCH_FAILURE,
+} from "../actions";
+import axios from "axios";
 
-const Search = (props) => {
-    const [searchValue, setSearchValue] = useState("");
+const Search = ({state, dispatch}) => {
 
-    const handleSearchInputChanges = (e) => {
-        setSearchValue(e.target.value);
-    };
+    const [searchValue, setSearchValue] = useState('');
 
-    const resetInputField = () => {
-        setSearchValue("")
-    };
-
-    const callSearchFunction = (e) => {
+    const callSearchFunction = e => {
         e.preventDefault();
-        props.search(searchValue);
-        resetInputField();
+        dispatch({
+            type: FETCH_INIT
+        });
+        const fetchData = async () => {
+            try {
+                const result = await axios(`https://www.omdbapi.com/?s=${searchValue}&apikey=`);
+                dispatch({
+                    type: FETCH_SUCCESS,
+                    payload: result.data.Search,
+                })
+            } catch (error) {
+                dispatch({
+                    type: FETCH_FAILURE
+                })
+            }
+        };
+        fetchData();
     };
 
     return (
         <form className="search">
             <input
                 value={searchValue}
-                onChange={handleSearchInputChanges}
+                onChange={e => setSearchValue(e.target.value)}
                 type="text"
             />
-            <input onClick={callSearchFunction} type="submit" value="SEARCH" />
+            <input onClick={callSearchFunction} type="submit" value="SEARCH"/>
         </form>
     );
 };
