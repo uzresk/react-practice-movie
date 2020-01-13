@@ -1,10 +1,4 @@
-import axios from 'axios';
-import {
-    SEARCH,
-    FETCH_INIT,
-    FETCH_SUCCESS,
-    FETCH_FAILURE
-} from "../actions";
+import {FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS} from "../actions";
 
 const movie = (state, action) => {
     switch (action.type) {
@@ -12,6 +6,7 @@ const movie = (state, action) => {
             return {
                 ...state,
                 loading: true,
+                movies: [],
                 errorMessage: null,
             };
         case FETCH_SUCCESS:
@@ -25,11 +20,12 @@ const movie = (state, action) => {
             return {
                 ...state,
                 loading: false,
+                movies: [],
                 errorMessage: "fetch error.",
             };
         default:
             return state;
     }
-}
+};
 
 export default movie

@@ -1,13 +1,11 @@
-import React, {useEffect, useReducer, useState} from "react";
-import axios from 'axios';
+import React, {useEffect, useReducer} from "react";
 import "../App.css";
 import reducer from '../reducers'
 import Header from "./Header";
-import Movie from "./Movie";
+import Movies from "./Movies";
 import Search from "./Search";
 import {FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS} from "../actions";
-
-const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=";
+import {fetchMovieData} from "../api";
 
 const App = () => {
 
@@ -22,10 +20,10 @@ const App = () => {
         const fetchData = async () => {
             dispatch({type: FETCH_INIT});
             try {
-                const result = await axios(MOVIE_API_URL);
+                const result = await fetchMovieData("man");
                 dispatch({
                     type: FETCH_SUCCESS,
-                    payload: result.data.Search,
+                    payload: result,
                 });
             } catch (error) {
                 dispatch({type: FETCH_FAILURE});
@@ -39,15 +37,7 @@ const App = () => {
             <Header text="HOOKED"/>
             <Search state={state} dispatch={dispatch}/>
             <p className="App-intro">Sharing a few of our favourite movies</p>
-            <div className="movies">
-                {state.loading && !state.errorMessage ? (
-                    <span>loading...</span>
-                ) : state.errorMessage ? (
-                    <div className="errorMessage">{state.errorMessage}</div>
-                ) : (
-                    state.movies.map((movie, index) => (<Movie key={index} movie={movie}/>))
-                )}
-            </div>
+            <Movies state={state} dispatch={dispatch}/>
         </div>
     );
 };

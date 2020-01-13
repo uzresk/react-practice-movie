@@ -1,10 +1,6 @@
-import React, {useReducer, useState} from "react";
-import {
-    FETCH_INIT,
-    FETCH_SUCCESS,
-    FETCH_FAILURE,
-} from "../actions";
-import axios from "axios";
+import React, {useState} from "react";
+import {FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS,} from "../actions";
+import {fetchMovieData} from "../api";
 
 const Search = ({state, dispatch}) => {
 
@@ -17,10 +13,10 @@ const Search = ({state, dispatch}) => {
         });
         const fetchData = async () => {
             try {
-                const result = await axios(`https://www.omdbapi.com/?s=${searchValue}&apikey=`);
+                const result = await fetchMovieData(searchValue);
                 dispatch({
                     type: FETCH_SUCCESS,
-                    payload: result.data.Search,
+                    payload: result,
                 })
             } catch (error) {
                 dispatch({
