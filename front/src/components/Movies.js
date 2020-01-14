@@ -1,7 +1,10 @@
 import Movie from "./Movie";
-import React from "react";
+import React, {useContext} from "react";
+import AppContext from "../contexts/AppContext";
 
-const Movies = ({state, dispatch}) => {
+const Movies = () => {
+
+    const {state, dispatch} = useContext(AppContext);
 
     return (
         <div className="movies">

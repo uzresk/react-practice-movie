@@ -6,6 +6,7 @@ import Movies from "./Movies";
 import Search from "./Search";
 import {FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS} from "../actions";
 import {fetchMovieData} from "../api";
+import AppContext from "../contexts/AppContext";
 
 const App = () => {
 
@@ -33,12 +34,14 @@ const App = () => {
     }, []);
 
     return (
-        <div className="App">
-            <Header text="HOOKED"/>
-            <Search state={state} dispatch={dispatch}/>
-            <p className="App-intro">Sharing a few of our favourite movies</p>
-            <Movies state={state} dispatch={dispatch}/>
-        </div>
+        <AppContext.Provider value={{state, dispatch}}>
+            <div className="App">
+                <Header text="HOOKED"/>
+                <Search/>
+                <p className="App-intro">Sharing a few of our favourite movies</p>
+                <Movies/>
+            </div>
+        </AppContext.Provider>
     );
 };
 

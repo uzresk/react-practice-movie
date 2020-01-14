@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS,} from "../actions";
 import {fetchMovieData} from "../api";
+import AppContext from "../contexts/AppContext";
 
-const Search = ({state, dispatch}) => {
+const Search = () => {
 
+    const {state, dispatch} = useContext(AppContext);
     const [searchValue, setSearchValue] = useState('');
 
     const callSearchFunction = e => {
